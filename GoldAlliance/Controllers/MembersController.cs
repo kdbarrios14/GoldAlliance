@@ -23,6 +23,8 @@ namespace GoldAlliance.Controllers
         // GET: Members/Details/5
         public ActionResult Details(int? id)
         {
+            id = (int) Session["MemberId"];
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

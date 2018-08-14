@@ -8,13 +8,19 @@ namespace GoldAlliance.Models
 {
     public class TdInterestViewModel
     {
-        public int duration { get; set; }
-        public decimal interestRate { get; set; }
+
+        public int Duration { get; set; }
 
         [RegularExpression(@"^\d+\.\d{0,2}$")]
+        [Display(Name ="Interest Rate")]
+        public decimal InterestRate { get; set; }
+
+        [RegularExpression(@"^\d+\.\d{0,2}$")]
+        [Display(Name ="Total Amount")]
         public decimal TotalAmount { get; set; }
 
         [RegularExpression(@"^\d+\.\d{0,2}$")]
+        [Display(Name = "Total Interest")]
         public decimal TotalInterest { get; set; }
     }
 }

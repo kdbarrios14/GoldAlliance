@@ -351,6 +351,7 @@
     <Content Include="Views\Loans\Index.cshtml" />
     <Content Include="Views\Loans\CalculatePayments.cshtml" />
     <Content Include="Views\TermDeposits\CalculateTotalInterest.cshtml" />
+    <Content Include="Views\Loans\MakePayment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

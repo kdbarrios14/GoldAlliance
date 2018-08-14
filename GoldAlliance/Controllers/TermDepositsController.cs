@@ -103,13 +103,13 @@ namespace GoldAlliance.Controllers
             var rateOfInterest = interest / 100;
             var years = duration / 12;
 
-            //Calculate total with simple interest formula Total = P(1+rt)
+            //Calculate total with simple interest formula: Total = P(1+rt)
             var totalAmount = principal * (1 + (rateOfInterest * years));
             //Calculate amount earned from interest
             var interestEarned = totalAmount - principal;
 
-            model.interestRate = (decimal) interest;
-            model.duration = duration;
+            model.InterestRate = (decimal) interest;
+            model.Duration = duration;
             model.TotalAmount = (decimal) totalAmount;
             model.TotalInterest = (decimal) interestEarned;
 
