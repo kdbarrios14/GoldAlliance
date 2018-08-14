@@ -1,0 +1,62 @@
+﻿@model IEnumerable<GoldAlliance.Models.Loan>
+
+@{
+    ViewBag.Title = "Loan Summary";
+}
+
+<h2>Loan Summary</h2>
+
+<p>
+    @Html.ActionLink("Apply for Loan", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanType.LoanName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanType.InterestRate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IssueDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Term_Years)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanType.LoanName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanType.InterestRate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IssueDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Term_Years)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentDate)
+        </td>
+        <td>
+            @Html.ActionLink("Calculate Payments/Interest", "CalculatePayments", new { id=item.LoanId }) |
+            @Html.ActionLink("Make Payment", "MakePayment", new { id=item.LoanId })
+        </td>
+    </tr>
+}
+
+</table>

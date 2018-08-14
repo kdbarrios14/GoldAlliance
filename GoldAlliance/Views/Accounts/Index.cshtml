@@ -1,0 +1,63 @@
+﻿@model IEnumerable<GoldAlliance.Models.Account>
+
+@{
+    ViewBag.Title = "Account Summary";
+}
+
+<h2>Account Summary</h2>
+
+<p>
+    @Html.ActionLink("Open New Account", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountType.AccountType1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CurrentBalance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OpenDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountStatus.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Overdraft)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountType.AccountType1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CurrentBalance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OpenDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountStatus.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Overdraft)
+        </td>
+        <td>
+            @Html.ActionLink("Make a Transaction", "Create", "Transactions", new { id=item.AccountNumber }, null) |
+            @Html.ActionLink("Details", "Index", "Transactions", new { id=item.AccountNumber }, null) |
+            @Html.ActionLink("Close Account", "Delete", new { id=item.AccountNumber })
+        </td>
+    </tr>
+}
+
+</table>

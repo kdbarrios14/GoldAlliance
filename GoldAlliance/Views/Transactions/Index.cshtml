@@ -1,0 +1,46 @@
+﻿@model IEnumerable<GoldAlliance.Models.Transaction>
+
+@{
+    ViewBag.Title = "Transaction History";
+}
+
+<h2>Transaction History</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TransactionDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TransactionType.TransTypeName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TransactionDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TransactionType.TransTypeName)
+        </td>
+    </tr>
+}
+</table>
+
+<div>
+    @Html.ActionLink("Back to List", "Index", "Accounts")
+</div>

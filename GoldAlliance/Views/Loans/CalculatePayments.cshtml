@@ -1,0 +1,50 @@
+﻿@model GoldAlliance.Models.PaymentViewModel
+
+@{ 
+    ViewBag.Title = "Calculate Payments";
+}
+
+<h2>Calculations</h2>
+
+<p>Calculations done with Loan Payment Formula</p>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.InterestRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InterestRate) %
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Term)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Term) Years
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MonthlyPayments)
+        </dt>
+
+        <dd>
+            $ @Html.DisplayFor(model => model.MonthlyPayments)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalInterestPaid)
+        </dt>
+
+        <dd>
+            $ @Html.DisplayFor(model => model.TotalInterestPaid)
+        </dd>
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

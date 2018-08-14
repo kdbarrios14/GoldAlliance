@@ -1,0 +1,606 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GoldAllianceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Accounts">
+          <Key>
+            <PropertyRef Name="AccountNumber" />
+          </Key>
+          <Property Name="AccountNumber" Type="int" Nullable="false" />
+          <Property Name="MemberId" Type="int" Nullable="false" />
+          <Property Name="AccountTypeId" Type="int" Nullable="false" />
+          <Property Name="CurrentBalance" Type="money" />
+          <Property Name="OpenDate" Type="date" Nullable="false" />
+          <Property Name="AccountStatusCode" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="Overdraft" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AccountStatuses">
+          <Key>
+            <PropertyRef Name="AccountStatusCode" />
+          </Key>
+          <Property Name="AccountStatusCode" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="AccountTypes">
+          <Key>
+            <PropertyRef Name="AccountTypeId" />
+          </Key>
+          <Property Name="AccountTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountType" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="InterestRate" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Loans">
+          <Key>
+            <PropertyRef Name="LoanId" />
+          </Key>
+          <Property Name="LoanId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MemberId" Type="int" Nullable="false" />
+          <Property Name="LoanTypeId" Type="int" Nullable="false" />
+          <Property Name="IssueDate" Type="date" Nullable="false" />
+          <Property Name="Amount" Type="money" Nullable="false" />
+          <Property Name="Term_Years" Type="int" Nullable="false" />
+          <Property Name="PaymentAmount" Type="money" />
+          <Property Name="PaymentDate" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LoanTypes">
+          <Key>
+            <PropertyRef Name="LoanTypeId" />
+          </Key>
+          <Property Name="LoanTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LoanName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="InterestRate" Type="decimal" Precision="5" Scale="2" />
+        </EntityType>
+        <EntityType Name="Members">
+          <Key>
+            <PropertyRef Name="MemberId" />
+          </Key>
+          <Property Name="MemberId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DOB" Type="date" Nullable="false" />
+          <Property Name="SSN" Type="int" />
+          <Property Name="AddressLine1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AddressLine2" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="State" Type="nvarchar" MaxLength="2" Nullable="false" />
+          <Property Name="Zipcode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="JoinDate" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TermDeposits">
+          <Key>
+            <PropertyRef Name="TermDepositId" />
+          </Key>
+          <Property Name="TermDepositId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MemberId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="money" Nullable="false" />
+          <Property Name="Duration_Months" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" />
+        </EntityType>
+        <EntityType Name="Transactions">
+          <Key>
+            <PropertyRef Name="TransactionId" />
+          </Key>
+          <Property Name="TransactionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TransTypeId" Type="int" Nullable="false" />
+          <Property Name="AccountNumber" Type="int" Nullable="false" />
+          <Property Name="AccountForTransfer" Type="int" />
+          <Property Name="TransactionDate" Type="date" Nullable="false" />
+          <Property Name="Amount" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransactionTypes">
+          <Key>
+            <PropertyRef Name="TransTypeId" />
+          </Key>
+          <Property Name="TransTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TransTypeName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <Association Name="FK_Accounts_AccountStatuses">
+          <End Role="AccountStatuses" Type="Self.AccountStatuses" Multiplicity="1" />
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountStatuses">
+              <PropertyRef Name="AccountStatusCode" />
+            </Principal>
+            <Dependent Role="Accounts">
+              <PropertyRef Name="AccountStatusCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Accounts_AccountTypes">
+          <End Role="AccountTypes" Type="Self.AccountTypes" Multiplicity="1" />
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountTypes">
+              <PropertyRef Name="AccountTypeId" />
+            </Principal>
+            <Dependent Role="Accounts">
+              <PropertyRef Name="AccountTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Accounts_Members">
+          <End Role="Members" Type="Self.Members" Multiplicity="1" />
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="Accounts">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TermDeposits_Members">
+          <End Role="Members" Type="Self.Members" Multiplicity="1" />
+          <End Role="TermDeposits" Type="Self.TermDeposits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="TermDeposits">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_Accounts">
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountNumber" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="AccountNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_TransactionTypes">
+          <End Role="TransactionTypes" Type="Self.TransactionTypes" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransactionTypes">
+              <PropertyRef Name="TransTypeId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="TransTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GoldAllianceModelStoreContainer">
+          <EntitySet Name="Accounts" EntityType="Self.Accounts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AccountStatuses" EntityType="Self.AccountStatuses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AccountTypes" EntityType="Self.AccountTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Loans" EntityType="Self.Loans" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoanTypes" EntityType="Self.LoanTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Members" EntityType="Self.Members" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TermDeposits" EntityType="Self.TermDeposits" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransactionTypes" EntityType="Self.TransactionTypes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Accounts_AccountStatuses" Association="Self.FK_Accounts_AccountStatuses">
+            <End Role="AccountStatuses" EntitySet="AccountStatuses" />
+            <End Role="Accounts" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Accounts_AccountTypes" Association="Self.FK_Accounts_AccountTypes">
+            <End Role="AccountTypes" EntitySet="AccountTypes" />
+            <End Role="Accounts" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Accounts_Members" Association="Self.FK_Accounts_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Accounts" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TermDeposits_Members" Association="Self.FK_TermDeposits_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="TermDeposits" EntitySet="TermDeposits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_Accounts" Association="Self.FK_Transactions_Accounts">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_TransactionTypes" Association="Self.FK_Transactions_TransactionTypes">
+            <End Role="TransactionTypes" EntitySet="TransactionTypes" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GoldAllianceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="AccountNumber" />
+          </Key>
+          <Property Name="AccountNumber" Type="Int32" Nullable="false" />
+          <Property Name="MemberId" Type="Int32" Nullable="false" />
+          <Property Name="AccountTypeId" Type="Int32" Nullable="false" />
+          <Property Name="CurrentBalance" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OpenDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="AccountStatusCode" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Overdraft" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AccountStatus" Relationship="Self.FK_Accounts_AccountStatuses" FromRole="Accounts" ToRole="AccountStatuses" />
+          <NavigationProperty Name="AccountType" Relationship="Self.FK_Accounts_AccountTypes" FromRole="Accounts" ToRole="AccountTypes" />
+          <NavigationProperty Name="Member" Relationship="Self.FK_Accounts_Members" FromRole="Accounts" ToRole="Members" />
+          <NavigationProperty Name="Transactions" Relationship="Self.FK_Transactions_Accounts" FromRole="Accounts" ToRole="Transactions" />
+        </EntityType>
+        <EntityType Name="AccountStatus">
+          <Key>
+            <PropertyRef Name="AccountStatusCode" />
+          </Key>
+          <Property Name="AccountStatusCode" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Accounts" Relationship="Self.FK_Accounts_AccountStatuses" FromRole="AccountStatuses" ToRole="Accounts" />
+        </EntityType>
+        <EntityType Name="AccountType">
+          <Key>
+            <PropertyRef Name="AccountTypeId" />
+          </Key>
+          <Property Name="AccountTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountType1" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="InterestRate" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Accounts" Relationship="Self.FK_Accounts_AccountTypes" FromRole="AccountTypes" ToRole="Accounts" />
+        </EntityType>
+        <EntityType Name="Loan">
+          <Key>
+            <PropertyRef Name="LoanId" />
+          </Key>
+          <Property Name="LoanId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MemberId" Type="Int32" Nullable="false" />
+          <Property Name="LoanTypeId" Type="Int32" Nullable="false" />
+          <Property Name="IssueDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="PaymentAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="LoanType" Relationship="Self.FK_Loans_LoanTypes" FromRole="Loans" ToRole="LoanTypes" />
+          <NavigationProperty Name="Member" Relationship="Self.FK_Loans_Members" FromRole="Loans" ToRole="Members" />
+          <Property Name="Term_Years" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LoanType">
+          <Key>
+            <PropertyRef Name="LoanTypeId" />
+          </Key>
+          <Property Name="LoanTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LoanName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InterestRate" Type="Decimal" Precision="5" Scale="2" />
+          <NavigationProperty Name="Loans" Relationship="Self.FK_Loans_LoanTypes" FromRole="LoanTypes" ToRole="Loans" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="MemberId" />
+          </Key>
+          <Property Name="MemberId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SSN" Type="Int32" />
+          <Property Name="AddressLine1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AddressLine2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Zipcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="JoinDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Accounts" Relationship="Self.FK_Accounts_Members" FromRole="Members" ToRole="Accounts" />
+          <NavigationProperty Name="Loans" Relationship="Self.FK_Loans_Members" FromRole="Members" ToRole="Loans" />
+          <NavigationProperty Name="TermDeposits" Relationship="Self.FK_TermDeposits_Members" FromRole="Members" ToRole="TermDeposits" />
+        </EntityType>
+        <EntityType Name="TermDeposit">
+          <Key>
+            <PropertyRef Name="TermDepositId" />
+          </Key>
+          <Property Name="TermDepositId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MemberId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Duration_Months" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Member" Relationship="Self.FK_TermDeposits_Members" FromRole="TermDeposits" ToRole="Members" />
+        </EntityType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="TransactionId" />
+          </Key>
+          <Property Name="TransactionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransTypeId" Type="Int32" Nullable="false" />
+          <Property Name="AccountNumber" Type="Int32" Nullable="false" />
+          <Property Name="AccountForTransfer" Type="Int32" />
+          <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_Transactions_Accounts" FromRole="Transactions" ToRole="Accounts" />
+          <NavigationProperty Name="TransactionType" Relationship="Self.FK_Transactions_TransactionTypes" FromRole="Transactions" ToRole="TransactionTypes" />
+        </EntityType>
+        <EntityType Name="TransactionType">
+          <Key>
+            <PropertyRef Name="TransTypeId" />
+          </Key>
+          <Property Name="TransTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Transactions" Relationship="Self.FK_Transactions_TransactionTypes" FromRole="TransactionTypes" ToRole="Transactions" />
+        </EntityType>
+        <Association Name="FK_Accounts_AccountStatuses">
+          <End Role="AccountStatuses" Type="Self.AccountStatus" Multiplicity="1" />
+          <End Role="Accounts" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountStatuses">
+              <PropertyRef Name="AccountStatusCode" />
+            </Principal>
+            <Dependent Role="Accounts">
+              <PropertyRef Name="AccountStatusCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Accounts_AccountTypes">
+          <End Role="AccountTypes" Type="Self.AccountType" Multiplicity="1" />
+          <End Role="Accounts" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountTypes">
+              <PropertyRef Name="AccountTypeId" />
+            </Principal>
+            <Dependent Role="Accounts">
+              <PropertyRef Name="AccountTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Accounts_Members">
+          <End Role="Members" Type="Self.Member" Multiplicity="1" />
+          <End Role="Accounts" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="Accounts">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_Accounts">
+          <End Role="Accounts" Type="Self.Account" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountNumber" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="AccountNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Loans_LoanTypes">
+          <End Role="LoanTypes" Type="Self.LoanType" Multiplicity="1" />
+          <End Role="Loans" Type="Self.Loan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoanTypes">
+              <PropertyRef Name="LoanTypeId" />
+            </Principal>
+            <Dependent Role="Loans">
+              <PropertyRef Name="LoanTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Loans_Members">
+          <End Role="Members" Type="Self.Member" Multiplicity="1" />
+          <End Role="Loans" Type="Self.Loan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="Loans">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TermDeposits_Members">
+          <End Role="Members" Type="Self.Member" Multiplicity="1" />
+          <End Role="TermDeposits" Type="Self.TermDeposit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="TermDeposits">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_TransactionTypes">
+          <End Role="TransactionTypes" Type="Self.TransactionType" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransactionTypes">
+              <PropertyRef Name="TransTypeId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="TransTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GoldAllianceEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Self.Account" />
+          <EntitySet Name="AccountStatuses" EntityType="Self.AccountStatus" />
+          <EntitySet Name="AccountTypes" EntityType="Self.AccountType" />
+          <EntitySet Name="Loans" EntityType="Self.Loan" />
+          <EntitySet Name="LoanTypes" EntityType="Self.LoanType" />
+          <EntitySet Name="Members" EntityType="Self.Member" />
+          <EntitySet Name="TermDeposits" EntityType="Self.TermDeposit" />
+          <EntitySet Name="Transactions" EntityType="Self.Transaction" />
+          <EntitySet Name="TransactionTypes" EntityType="Self.TransactionType" />
+          <AssociationSet Name="FK_Accounts_AccountStatuses" Association="Self.FK_Accounts_AccountStatuses">
+            <End Role="AccountStatuses" EntitySet="AccountStatuses" />
+            <End Role="Accounts" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Accounts_AccountTypes" Association="Self.FK_Accounts_AccountTypes">
+            <End Role="AccountTypes" EntitySet="AccountTypes" />
+            <End Role="Accounts" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Accounts_Members" Association="Self.FK_Accounts_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Accounts" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_Accounts" Association="Self.FK_Transactions_Accounts">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Loans_LoanTypes" Association="Self.FK_Loans_LoanTypes">
+            <End Role="LoanTypes" EntitySet="LoanTypes" />
+            <End Role="Loans" EntitySet="Loans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Loans_Members" Association="Self.FK_Loans_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Loans" EntitySet="Loans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TermDeposits_Members" Association="Self.FK_TermDeposits_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="TermDeposits" EntitySet="TermDeposits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_TransactionTypes" Association="Self.FK_Transactions_TransactionTypes">
+            <End Role="TransactionTypes" EntitySet="TransactionTypes" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GoldAllianceModelStoreContainer" CdmEntityContainer="GoldAllianceEntities">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="GoldAllianceModel.Account">
+              <MappingFragment StoreEntitySet="Accounts">
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="AccountTypeId" ColumnName="AccountTypeId" />
+                <ScalarProperty Name="CurrentBalance" ColumnName="CurrentBalance" />
+                <ScalarProperty Name="OpenDate" ColumnName="OpenDate" />
+                <ScalarProperty Name="AccountStatusCode" ColumnName="AccountStatusCode" />
+                <ScalarProperty Name="Overdraft" ColumnName="Overdraft" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountStatuses">
+            <EntityTypeMapping TypeName="GoldAllianceModel.AccountStatus">
+              <MappingFragment StoreEntitySet="AccountStatuses">
+                <ScalarProperty Name="AccountStatusCode" ColumnName="AccountStatusCode" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountTypes">
+            <EntityTypeMapping TypeName="GoldAllianceModel.AccountType">
+              <MappingFragment StoreEntitySet="AccountTypes">
+                <ScalarProperty Name="AccountTypeId" ColumnName="AccountTypeId" />
+                <ScalarProperty Name="AccountType1" ColumnName="AccountType" />
+                <ScalarProperty Name="InterestRate" ColumnName="InterestRate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Loans">
+            <EntityTypeMapping TypeName="GoldAllianceModel.Loan">
+              <MappingFragment StoreEntitySet="Loans">
+                <ScalarProperty Name="Term_Years" ColumnName="Term_Years" />
+                <ScalarProperty Name="LoanId" ColumnName="LoanId" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="LoanTypeId" ColumnName="LoanTypeId" />
+                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="PaymentAmount" ColumnName="PaymentAmount" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoanTypes">
+            <EntityTypeMapping TypeName="GoldAllianceModel.LoanType">
+              <MappingFragment StoreEntitySet="LoanTypes">
+                <ScalarProperty Name="LoanTypeId" ColumnName="LoanTypeId" />
+                <ScalarProperty Name="LoanName" ColumnName="LoanName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="InterestRate" ColumnName="InterestRate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Members">
+            <EntityTypeMapping TypeName="GoldAllianceModel.Member">
+              <MappingFragment StoreEntitySet="Members">
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="SSN" ColumnName="SSN" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Zipcode" ColumnName="Zipcode" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TermDeposits">
+            <EntityTypeMapping TypeName="GoldAllianceModel.TermDeposit">
+              <MappingFragment StoreEntitySet="TermDeposits">
+                <ScalarProperty Name="TermDepositId" ColumnName="TermDepositId" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Duration_Months" ColumnName="Duration_Months" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transactions">
+            <EntityTypeMapping TypeName="GoldAllianceModel.Transaction">
+              <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="TransTypeId" ColumnName="TransTypeId" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="AccountForTransfer" ColumnName="AccountForTransfer" />
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionTypes">
+            <EntityTypeMapping TypeName="GoldAllianceModel.TransactionType">
+              <MappingFragment StoreEntitySet="TransactionTypes">
+                <ScalarProperty Name="TransTypeId" ColumnName="TransTypeId" />
+                <ScalarProperty Name="TransTypeName" ColumnName="TransTypeName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
