@@ -22,6 +22,8 @@ namespace GoldAlliance.Models
 
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public System.DateTime TransactionDate { get; set; }
+
+        [Range(1, double.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public decimal Amount { get; set; }
     
         public virtual Account Account { get; set; }
