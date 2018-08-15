@@ -330,10 +330,8 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Members\Create.cshtml" />
-    <Content Include="Views\Members\Delete.cshtml" />
     <Content Include="Views\Members\Details.cshtml" />
     <Content Include="Views\Members\Edit.cshtml" />
-    <Content Include="Views\Members\Index.cshtml" />
     <Content Include="Views\Accounts\Create.cshtml" />
     <Content Include="Views\Accounts\Delete.cshtml" />
     <Content Include="Views\Accounts\Details.cshtml" />

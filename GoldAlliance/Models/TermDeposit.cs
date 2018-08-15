@@ -24,6 +24,7 @@ namespace GoldAlliance.Models
 
         [Required]
         [Range(6, int.MaxValue, ErrorMessage = "Duration must be at least 6 months")]
+        [Display(Name ="Duration(months)")]
         public int Duration_Months { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]

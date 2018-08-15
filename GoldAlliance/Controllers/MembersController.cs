@@ -14,12 +14,6 @@ namespace GoldAlliance.Controllers
     {
         private GoldAllianceEntities db = new GoldAllianceEntities();
 
-        // GET: Members
-        public ActionResult Index()
-        {
-            return View(db.Members.ToList());
-        }
-
         // GET: Members/Details/5
         public ActionResult Details(int? id)
         {
@@ -89,32 +83,6 @@ namespace GoldAlliance.Controllers
                 return RedirectToAction("Index");
             }
             return View(member);
-        }
-
-        // GET: Members/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Member member = db.Members.Find(id);
-            if (member == null)
-            {
-                return HttpNotFound();
-            }
-            return View(member);
-        }
-
-        // POST: Members/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Member member = db.Members.Find(id);
-            db.Members.Remove(member);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
