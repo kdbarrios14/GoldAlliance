@@ -171,8 +171,19 @@ namespace GoldAlliance.Controllers
             Account account = db.Accounts.Find(id);
 
             //check if account is business
+            if(account.AccountTypeId == 2)
+            {
+                return View("BusinessError");
+            }
 
-            return View();
+            var Principal = (double) account.CurrentBalance;
+            var InterestRate = (double) account.AccountType.InterestRate / 100;
+            var Interest = Principal * InterestRate * 1;
+
+            model.InterestRate = (decimal) (InterestRate * 100);
+            model.AccountInterest = (decimal) Interest;
+
+            return View(model);
         }
 
         protected override void Dispose(bool disposing)

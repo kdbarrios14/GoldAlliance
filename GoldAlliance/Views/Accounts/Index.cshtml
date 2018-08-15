@@ -55,7 +55,8 @@
         <td>
             @Html.ActionLink("Make a Transaction", "Create", "Transactions", new { id=item.AccountNumber }, null) |
             @Html.ActionLink("Transaction History", "Index", "Transactions", new { id=item.AccountNumber }, null) |
-            @Html.ActionLink("Close Account", "Delete", new { id=item.AccountNumber })
+            @Html.ActionLink("Close Account", "Delete", new { id=item.AccountNumber }) |
+            @Html.ActionLink("Interest Details", "CalculateInterest", new { id=item.AccountNumber})
         </td>
     </tr>
 }

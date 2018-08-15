@@ -13,7 +13,7 @@ namespace GoldAlliance.Models
         public decimal InterestRate { get; set; }
 
         [RegularExpression(@"^\d+\.\d{0,2}$")]
-        [Display(Name = "Interest on Checking")]
+        [Display(Name = "Yearly Interest on Checking")]
         public decimal AccountInterest { get; set; }
     }
 }
