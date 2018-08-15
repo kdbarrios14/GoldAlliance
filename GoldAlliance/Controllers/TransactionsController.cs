@@ -103,12 +103,14 @@ namespace GoldAlliance.Controllers
                                     //apply overdraft fee
                                     account.CurrentBalance -= overdraftFee;
                                 }
+                                transaction.Amount = transaction.Amount * -1;
                             }
                         }
                         else
                         {
                             //make withdrawal
                             account.CurrentBalance -= transaction.Amount;
+                            transaction.Amount = transaction.Amount * -1;
                         }
                         break;
                     case 3: //Transfer
@@ -133,6 +135,18 @@ namespace GoldAlliance.Controllers
                         //make transactions to both accounts
                         account.CurrentBalance -= transaction.Amount;
                         ToAccount.CurrentBalance += transaction.Amount;
+
+                        //add transfer stub to other account
+                        Transaction transaction2 = new Transaction
+                        {
+                            //TransTypeId,AccountNumber,AccountForTransfer,TransactionDate,Amount
+                            TransTypeId = 3,
+                            AccountNumber = ToAccount.AccountNumber,
+                            TransactionDate = DateTime.Now,
+                            Amount = transaction.Amount
+                        };
+                        transaction.Amount = transaction.Amount * -1;
+                        db.Transactions.Add(transaction2);
                         break;
                 }
                 db.Transactions.Add(transaction);

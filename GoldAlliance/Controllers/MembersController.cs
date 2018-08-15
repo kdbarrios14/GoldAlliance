@@ -24,6 +24,7 @@ namespace GoldAlliance.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Member member = db.Members.Find(id);
+
             if (member == null)
             {
                 return HttpNotFound();

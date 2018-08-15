@@ -101,7 +101,7 @@ namespace GoldAlliance.Controllers
             }
 
             var rateOfInterest = interest / 100;
-            var years = duration / 12;
+            var years = (double) duration / 12;
 
             //Calculate total with simple interest formula: Total = P(1+rt)
             var totalAmount = principal * (1 + (rateOfInterest * years));

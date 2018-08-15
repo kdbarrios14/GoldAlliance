@@ -11,7 +11,8 @@ namespace GoldAlliance.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class AccountType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,6 +22,8 @@ namespace GoldAlliance.Models
         }
     
         public int AccountTypeId { get; set; }
+
+        [Display(Name ="Account Type")]
         public string AccountType1 { get; set; }
         public Nullable<decimal> InterestRate { get; set; }
         public string Description { get; set; }
