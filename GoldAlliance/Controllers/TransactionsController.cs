@@ -83,7 +83,7 @@ namespace GoldAlliance.Controllers
                         }
                         else if (account.AccountType.AccountType1.Equals("Business") && transaction.Amount > account.CurrentBalance)
                         {
-                            //overdraft fee -> "loan"?
+                            //overdraft fee
                             if (account.Overdraft)
                             {
                                 ModelState.AddModelError("", "You already have overdraft!!");

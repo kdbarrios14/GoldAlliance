@@ -23,10 +23,15 @@ namespace GoldAlliance.Models
         public System.DateTime IssueDate { get; set; }
 
         public decimal Amount { get; set; }
+
+        [Display(Name ="Amount Paid")]
         public Nullable<decimal> PaymentAmount { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        [Display(Name ="Upcoming Payment Date")]
         public System.DateTime PaymentDate { get; set; }
+
+        [Display(Name ="Term(years)")]
         public int Term_Years { get; set; }
     
         public virtual LoanType LoanType { get; set; }

@@ -70,6 +70,8 @@ namespace GoldAlliance.Controllers
                 loan.MemberId = (int)Session["MemberId"];
 
                 loan.IssueDate = DateTime.Now;
+                loan.PaymentAmount = (decimal) 0;
+
                 //generate payment date 30 days later
                 DateTime paymentDate = generatePayment(loan.IssueDate);
                 loan.PaymentDate = paymentDate;
@@ -142,9 +144,31 @@ namespace GoldAlliance.Controllers
             return View(model);
         }
 
-        public ActionResult MakePayment(int id)
+        public ActionResult MakePayment(LoanPaymentViewModel model, int id)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                Loan loan = db.Loans.Find(id);
+
+                var Amount = model.PaymentMade;
+
+                var nextPaymentDate = loan.PaymentDate;
+
+                if(loan.PaymentAmount == null)
+                {
+                    loan.PaymentAmount = (decimal)0;
+                }
+
+                loan.PaymentAmount += Amount;
+                loan.PaymentDate = generatePayment(nextPaymentDate);
+
+                db.Entry(loan).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
         }
 
         protected override void Dispose(bool disposing)

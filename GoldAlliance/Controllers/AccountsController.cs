@@ -166,6 +166,15 @@ namespace GoldAlliance.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult CalculateInterest(AccountInterestViewModel model, int id)
+        {
+            Account account = db.Accounts.Find(id);
+
+            //check if account is business
+
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
