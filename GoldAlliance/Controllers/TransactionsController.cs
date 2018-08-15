@@ -116,6 +116,13 @@ namespace GoldAlliance.Controllers
                     case 3: //Transfer
                         //find transfer account
                         var ToAccount = db.Accounts.Find(transaction.AccountForTransfer);
+                        //check if account exists
+                        if(ToAccount == null)
+                        {
+                            ModelState.AddModelError("", "Account does not exist");
+                            ViewBag.TransTypeId = new SelectList(db.TransactionTypes, "TransTypeId", "TransTypeName", transaction.TransTypeId);
+                            return View(transaction);
+                        }
                         //check if it is same account
                         if (ToAccount.AccountNumber == account.AccountNumber)
                         {
